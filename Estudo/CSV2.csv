@@ -1,0 +1,100 @@
+Atleta;Pedro Allencar;20000000101;23;Natação
+Instrutor;Luciana Camargo;20000000102;36;Musculação;3300.00
+Atleta;Sofia Belchior;20000000103;20;Vôlei
+Atleta;João Coutinho;20000000104;25;Basquete
+Instrutor;Ricardo Diniz;20000000105;40;Treinamento Funcional;3900.00
+Atleta;Yasmin Evangelista;20000000106;19;Futebol
+Atleta;Antônio Figueiredo;20000000107;27;Atletismo
+Instrutor;Marta Galvão;20000000108;34;Crossfit;4150.00
+Atleta;Cecília Holanda;20000000109;21;Ginástica
+Atleta;Francisco Ibiapina;20000000110;29;Judô
+Instrutor;Berenice Jardim;20000000111;38;Pilates;3550.00
+Atleta;Lucca Klein;20000000112;24;Natação
+Atleta;Eloá Lacerda;20000000113;22;Tênis
+Instrutor;Maurício Marinho;20000000114;46;Fisiologia;5050.00
+Atleta;Valentina Naves;20000000115;18;Handebol
+Atleta;Joaquim Ornelas;20000000116;26;Ciclismo
+Instrutor;Silvana Pimenta;20000000117;30;Zumba;2850.00
+Atleta;Benjamin Quaresma;20000000118;23;Boxe
+Atleta;Heloísa Resende;20000000119;25;Corrida
+Instrutor;Welington Sampaio;20000000120;37;Musculação;3480.00
+Atleta;Mariah Telles;20000000121;20;Natação
+Atleta;Vicente Uchôa;20000000122;28;Jiu-Jitsu
+Instrutor;Zélia Vasconcelos;20000000123;35;Alongamento;2700.00
+Atleta;Miguel Wanderley;20000000124;21;Futebol
+Atleta;Rebeca Ximenes;20000000125;24;Vôlei
+Instrutor;Ronaldo Yunes;20000000126;43;Preparação Física;4550.00
+Atleta;Agatha Zampieri;20000000127;19;Atletismo
+Atleta;Levi Abrantes;20000000128;26;Basquete
+Instrutor;Clarice Bentes;20000000129;33;Hidroginástica;3120.00
+Atleta;Noah Cordeiro;20000000130;27;Triatlo
+Atleta;Catarina Dutra;20000000131;22;Ginástica
+Instrutor;Edson Esteves;20000000132;41;Biomecânica;4800.00
+Atleta;Davi Lucca Fontes;20000000133;23;Judô
+Atleta;Lavínia Guedes;20000000134;20;Tênis
+Instrutor;Reginaldo Horta;20000000135;36;Crossfit;4020.00
+Atleta;Lívia Imperial;20000000136;29;Ciclismo
+Atleta;Bento Junqueira;20000000137;24;Natação
+Instrutor;Nádia Koury;20000000138;31;Pilates;3380.00
+Atleta;Anthony Linhares;20000000139;19;Handebol
+Atleta;olivia Motta;20000000140;25;Corrida
+Instrutor;Celso Noronha;20000000141;45;Musculação;3650.00
+Atleta;Isabelly Oliveira;20000000142;18;Vôlei
+Atleta;Isaac Peres;20000000143;28;Boxe
+Instrutor;Rosana Quevedo;20000000144;34;Treinamento Funcional;3750.00
+Atleta;João Miguel Rios;20000000145;21;Futebol
+Atleta;Alícia Seabra;20000000146;23;Atletismo
+Instrutor;Milton Torres;20000000147;38;Artes Marciais;3920.00
+Atleta;Enzo Gabriel Urbano;20000000148;22;Basquete
+Atleta;Maria Eduarda Vargas;20000000149;27;Natação
+Instrutor;Nelson Werneck;20000000150;44;Preparação Física;4650.00
+Atleta;Sarah Zacarias;20000000151;20;Ginástica
+Atleta;Pedro Henrique Alvim;20000000152;30;Jiu-Jitsu
+Instrutor;Míriam Brandão;20000000153;32;Dança;2920.00
+Atleta;Marina Castanheira;20000000154;24;Tênis
+Atleta;Luiz Felipe Damasceno;20000000155;26;Ciclismo
+Instrutor;Humberto Espínola;20000000156;47;Fisiologia;5150.00
+Atleta;Liz Fagundes;20000000157;19;Futebol
+Atleta;Nicolas Gadelha;20000000158;28;Corrida
+Instrutor;Vânia Hernandes;20000000159;35;Musculação;3490.00
+Atleta;Elisa Jordão;20000000160;21;Vôlei
+Atleta;Rael Lins;20000000161;25;Judô
+Instrutor;Cássia Mansur;20000000162;30;Pilates;3280.00
+Atleta;Ágatha Negrão;20000000163;22;Boxe
+Atleta;Tomás Otero;20000000164;29;Triatlo
+Instrutor;Lauro Peçanha;20000000165;39;Crossfit;4250.00
+Atleta;Pietra Quintanilha;20000000166;18;Natação
+Atleta;Yan Rabelo;20000000167;24;Handebol
+Instrutor;Solange Sarmento;20000000168;37;Hidroginástica;3180.00
+Atleta;Mirella Trindade;20000000169;26;Atletismo
+Atleta;Augusto Uchoa;20000000170;20;Basquete
+Instrutor;Irineu Valadares;20000000171;42;Treinamento Funcional;3820.00
+Atleta;Laís Watanabe;20000000172;27;Futebol
+Atleta;Afonso Xisto;20000000173;23;Tênis
+Instrutor;Olga Zamboni;20000000174;46;Preparação Física;4850.00
+Atleta;Lívia Alcântara;20000000175;25;Ciclismo
+Atleta;Otávio Belém;20000000176;21;Ginástica
+Instrutor;Júlio Cintra;20000000177;33;Zumba;2980.00
+Atleta;Ester Dórea;20000000178;28;Jiu-Jitsu
+Atleta;José Eduardo Eiras;20000000179;19;Corrida
+Instrutor;Fátima Frota;20000000180;48;Biomecânica;5250.00
+Atleta;Ana Clara Goulart;20000000181;22;Natação
+Atleta;Luiz Otávio Hipólito;20000000182;24;Vôlei
+Instrutor;Rômulo Imperial;20000000183;36;Musculação;3580.00
+Atleta;Ana Júlia Japiassú;20000000184;20;Judô
+Atleta;Ravi Leal;20000000185;29;Triatlo
+Instrutor;Lúcia Mascarenhas;20000000186;31;Alongamento;2780.00
+Atleta;Maya Nóbrega;20000000187;23;Boxe
+Atleta;Josué Oliveira;20000000188;25;Atletismo
+Instrutor;Dora Pederneiras;20000000189;41;Artes Marciais;4080.00
+Atleta;Maria Cecília Queirós;20000000190;21;Futebol
+Atleta;Erick Rêgo;20000000191;26;Handebol
+Instrutor;Saulo Silveira;20000000192;40;Pilates;3620.00
+Atleta;Maria Alice Távora;20000000193;18;Basquete
+Atleta;Kauan Ulhoa;20000000194;24;Tênis
+Instrutor;Sônia Ventura;20000000195;34;Crossfit;3980.00
+Atleta;Aurora Waked;20000000196;27;Ciclismo
+Atleta;Raul Xavier;20000000197;20;Natação
+Instrutor;Norberto Ypiranga;20000000198;45;Fisiologia;5020.00
+Atleta;Bella Zuanazzi;20000000199;22;Corrida
+Atleta;Apolo Barcellos;20000000200;21;Vôlei
