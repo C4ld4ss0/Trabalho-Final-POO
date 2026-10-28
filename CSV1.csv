@@ -1,0 +1,100 @@
+Atleta;Luccas Silva;10000000001;22;Natação
+Instrutor;Marcos Oliveira;10000000002;35;Musculação;3200.00
+Atleta;Ana Santos;10000000003;19;Vôlei
+Atleta;Beatriz Souza;10000000004;24;Basquete
+Instrutor;Carlos Pereira;10000000005;41;Treinamento Funcional;3850.50
+Atleta;Gabriel Costa;10000000006;21;Futebol
+Atleta;Juliana Rodrigues;10000000007;26;Atletismo
+Instrutor;Rafael Almeida;10000000008;33;Crossfit;4100.00
+Atleta;Fernanda Nascimento;10000000009;20;Ginástica
+Atleta;Bruno Lima;10000000010;28;Judô
+Instrutor;Patrícia Araújo;10000000011;39;Pilates;3500.00
+Atleta;Diego Fernandes;10000000012;23;Natação
+Atleta;Camila Carvalho;10000000013;25;Tênis
+Instrutor;Rodrigo Gomes;10000000014;45;Fisiologia;4900.00
+Atleta;Letícia Martins;10000000015;18;Handebol
+Atleta;Thiago Rocha;10000000016;27;Ciclismo
+Instrutor;Vanessa Ribeiro;10000000017;31;Zumba;2800.00
+Atleta;Felipe Alves;10000000018;22;Boxe
+Atleta;Mariana Monteiro;10000000019;24;Corrida
+Instrutor;Gustavo Mendes;10000000020;38;Musculação;3400.00
+Atleta;Amanda Barros;10000000021;21;Natação
+Atleta;Leonardo Freitas;10000000022;29;Jiu-Jitsu
+Instrutor;Carolina Barbosa;10000000023;36;Alongamento;2650.00
+Atleta;Eduardo Pinto;10000000024;20;Futebol
+Atleta;Natália Moura;10000000025;23;Vôlei
+Instrutor;Daniel Cavalcanti;10000000026;42;Preparação Física;4500.00
+Atleta;Larissa Dias;10000000027;19;Atletismo
+Atleta;Matheus Castro;10000000028;25;Basquete
+Instrutor;Aline Campos;10000000029;34;Hidroginástica;3100.00
+Atleta;Vinícius Cardoso;10000000030;26;Triatlo
+Atleta;Bianca Teixeira;10000000031;22;Ginástica
+Instrutor;André Correia;10000000032;40;Biomecânica;4750.00
+Atleta;Guilherme Neves;10000000033;24;Judô
+Atleta;Priscila Farias;10000000034;21;Tênis
+Instrutor;Marcelo Cunha;10000000035;37;Crossfit;4000.00
+Atleta;Tatiane Sales;10000000036;28;Ciclismo
+Atleta;Henrique Marques;10000000037;23;Natação
+Instrutor;Renata Melo;10000000038;32;Pilates;3350.00
+Atleta;Caio Azevedo;10000000039;20;Handebol
+Atleta;Débora Moreira;10000000040;25;Corrida
+Instrutor;Alexandre Pires;10000000041;44;Musculação;3600.00
+Atleta;Sabrina Nunes;10000000042;19;Vôlei
+Atleta;Igor Vieira;10000000043;27;Boxe
+Instrutor;Cristiane Caldeira;10000000044;35;Treinamento Funcional;3700.00
+Atleta;Samuel Rezende;10000000045;22;Futebol
+Atleta;Jéssica Peixoto;10000000046;24;Atletismo
+Instrutor;Fábio Nogueira;10000000047;39;Artes Marciais;3900.00
+Atleta;Murilo Soares;10000000048;21;Basquete
+Atleta;Bárbara Ramos;10000000049;26;Natação
+Instrutor;Leandro Viana;10000000050;43;Preparação Física;4600.00
+Atleta;Raquel Lopes;10000000051;20;Ginástica
+Atleta;Otávio Machado;10000000052;29;Jiu-Jitsu
+Instrutor;Simone Morais;10000000053;33;Dança;2900.00
+Atleta;Vitor Siqueira;10000000054;23;Tênis
+Atleta;Elaine Fonseca;10000000055;25;Ciclismo
+Instrutor;César Brito;10000000056;46;Fisiologia;5100.00
+Atleta;Pietro Batista;10000000057;18;Futebol
+Atleta;Mônica Tavares;10000000058;27;Corrida
+Instrutor;Evandro Paiva;10000000059;36;Musculação;3450.00
+Atleta;Helena Assunção;10000000060;22;Vôlei
+Atleta;Luan Coelho;10000000061;24;Judô
+Instrutor;Gisele Barreto;10000000062;31;Pilates;3250.00
+Atleta;Yuri Dantas;10000000063;21;Boxe
+Atleta;Kátia Guimarães;10000000064;28;Triatlo
+Instrutor;Sérgio Miranda;10000000065;40;Crossfit;4200.00
+Atleta;Enzo Pacheco;10000000066;19;Natação
+Atleta;Paula Magalhães;10000000067;23;Handebol
+Instrutor;Valéria Macedo;10000000068;38;Hidroginástica;3150.00
+Atleta;Davi Borges;10000000069;25;Atletismo
+Atleta;Lívia Medeiros;10000000070;20;Basquete
+Instrutor;Márcio Amaral;10000000071;41;Treinamento Funcional;3800.00
+Atleta;Arthur Bernardes;10000000072;26;Futebol
+Atleta;Cíntia Garcia;10000000073;22;Tênis
+Instrutor;Cláudio Bastos;10000000074;45;Preparação Física;4800.00
+Atleta;HeitorAguiar;10000000075;24;Ciclismo
+Atleta;Flávia Arruda;10000000076;21;Ginástica
+Instrutor;Adriana Rangel;10000000077;34;Zumba;2950.00
+Atleta;Breno Santana;10000000078;27;Jiu-Jitsu
+Atleta;Milena Queiroz;10000000079;19;Corrida
+Instrutor;Jorge Mattos;10000000080;47;Biomecânica;5200.00
+Atleta;Cauã Lemos;10000000081;23;Natação
+Atleta;Estela Xavier;10000000082;25;Vôlei
+Instrutor;Robson Prado;10000000083;37;Musculação;3550.00
+Atleta;Gael Toledo;10000000084;20;Judô
+Atleta;Lorena Porto;10000000085;28;Triatlo
+Instrutor;Kelly Franca;10000000086;32;Alongamento;2750.00
+Atleta;Theo Valente;10000000087;22;Boxe
+Atleta;Maitê Castilho;10000000088;24;Atletismo
+Instrutor;Hélio Serpa;10000000089;42;Artes Marciais;4050.00
+Atleta;Ruan Pinheiro;10000000090;21;Futebol
+Atleta;Ísis Meireles;10000000091;26;Handebol
+Instrutor;Tânia Drumond;10000000092;39;Pilates;3600.00
+Atleta;Emanuel Chaves;10000000093;18;Basquete
+Atleta;Alana Salgado;10000000094;23;Tênis
+Instrutor;Denis Guerreiro;10000000095;35;Crossfit;3950.00
+Atleta;Calebe Paz;10000000096;25;Ciclismo
+Atleta;Clara Vilela;10000000097;20;Natação
+Instrutor;Gilberto Dorneles;10000000098;44;Fisiologia;5000.00
+Atleta;BenícioLeal;10000000099;22;Corrida
+Atleta;Luna Gouveia;10000000100;21;Vôlei
