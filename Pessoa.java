@@ -1,20 +1,12 @@
-
 public abstract class Pessoa {
     private String nome;
     private String cpf;
     private int idade;
 
-    public Pessoa(String nome, String cpf, int idade){
-        this.nome = nome;
-        this.cpf = SimplificarCpf(cpf);
-        this.idade = idade;
-    }
-//
-    private String SimplificarCpf(String cpfBruto) {
-        if (cpfBruto == null) {
-            return "";
-        }
-        return cpfBruto.replaceAll("[^0-9]", "");
+    public Pessoa(String nome, String cpf, int idade, int idadeMinima) {
+        this.nome = Validador.validarNome(nome);
+        this.cpf = Validador.validarCpf(cpf);
+        this.idade = Validador.validarIdade(idade, idadeMinima, Validador.IDADE_MAX);
     }
 
     public String getCpf() {return cpf;}
@@ -28,7 +20,7 @@ public abstract class Pessoa {
                 cpfNumeros.substring(6, 9),
                 cpfNumeros.substring(9, 11));
         }
-        return this.cpf; // Retorna o CPF sem formatação se não tiver 11 dígitos
+        return this.cpf;
     }
 
     public String getNome() {return nome;}
@@ -36,8 +28,8 @@ public abstract class Pessoa {
     public int getIdade() {return idade;}
 
     public abstract String obterDadosFormatados();
-    
-    public void exibirDados(){
+
+    public void exibirDados() {
         System.out.println(obterDadosFormatados());
     }
 }

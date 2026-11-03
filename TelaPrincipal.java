@@ -119,7 +119,7 @@ public class TelaPrincipal extends JFrame {
                 String salarioStr = JOptionPane.showInputDialog(this, "Digite o novo salário:");
                 if (salarioStr != null && !salarioStr.trim().isEmpty()) {
                     try {
-                        double novoSalario = Double.parseDouble(salarioStr.replace(",", "."));
+                        double novoSalario = Validador.lerSalario(salarioStr);
                         // Atenção: verifique se na classe Equipe o método está com 'A' maiúsculo ou 'a' minúsculo
                         equipe.AlterarSalarioInstrutor(cpf, novoSalario);
                         JOptionPane.showMessageDialog(this, "Salário alterado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -134,44 +134,49 @@ public class TelaPrincipal extends JFrame {
         });
 
         //-- ADICIONAR PESSOA --//
+        // Cada campo é validado assim que digitado (mesma ordem e mesmos avisos para Atleta e Instrutor)
         botaoAdicionar.addActionListener(e -> {
             String[] opcoes = {"Atleta", "Instrutor"};
             String tipo = (String) JOptionPane.showInputDialog(this, "Selecione o tipo de pessoa:", "Adicionar Pessoa",
                     JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
+            if (tipo == null) return;
 
-            if (tipo != null) {
-                try {
-                    String nome = JOptionPane.showInputDialog(this, "Digite o nome:");
-                    if (nome == null) return;
+            boolean ehAtleta = tipo.equals("Atleta");
+            String titulo = "Adicionar " + tipo;
+            int idadeMin = ehAtleta ? Validador.IDADE_MIN_ATLETA : Validador.IDADE_MIN_INSTRUTOR;
 
-                    String cpf = JOptionPane.showInputDialog(this, "Digite o CPF:");
-                    if (cpf == null) return;
+            String nome = pedirCampo(titulo, "Digite o nome:", Validador::validarNome);
+            if (nome == null) return;
 
-                    String idadeStr = JOptionPane.showInputDialog(this, "Digite a idade:");
-                    if (idadeStr == null) return;
-                    int idade = Integer.parseInt(idadeStr.trim());
-
-                    if (tipo.equals("Atleta")) {
-                        String modalidade = JOptionPane.showInputDialog(this, "Digite a modalidade:");
-                        if (modalidade == null) return;
-                        equipe.adicionarMembro(new Atleta(nome, cpf, idade, modalidade));
-                    } else {
-                        String especialidade = JOptionPane.showInputDialog(this, "Digite a especialidade:");
-                        if (especialidade == null) return;
-
-                        String salarioStr = JOptionPane.showInputDialog(this, "Digite o salário:");
-                        if (salarioStr == null) return;
-                        double salario = Double.parseDouble(salarioStr.replace(",", "."));
-
-                        equipe.adicionarMembro(new Instrutor(nome, cpf, idade, especialidade, salario));
-                    }
-                    atualizarTabela(equipe.getMembros());
-                    JOptionPane.showMessageDialog(this, tipo + " adicionado(a) com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Erro: Idade ou salário devem ser valores numéricos válidos.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            String cpf = pedirCampo(titulo, "Digite o CPF (11 números; pontos, traço e espaços são opcionais):", s -> {
+                String limpo = Validador.validarCpf(s);
+                if (equipe.existeCpf(limpo)) {
+                    throw new IllegalArgumentException("Já existe um membro cadastrado com este CPF.");
                 }
+                return limpo;
+            });
+            if (cpf == null) return;
+
+            Integer idade = pedirCampo(titulo, "Digite a idade:",
+                    s -> Validador.validarIdade(Validador.lerIdade(s), idadeMin, Validador.IDADE_MAX));
+            if (idade == null) return;
+
+            try {
+                if (ehAtleta) {
+                    String modalidade = pedirCampo(titulo, "Digite a modalidade:", s -> Validador.validarTexto(s, "modalidade"));
+                    if (modalidade == null) return;
+                    equipe.adicionarMembro(new Atleta(nome, cpf, idade, modalidade));
+                } else {
+                    String especialidade = pedirCampo(titulo, "Digite a especialidade:", s -> Validador.validarTexto(s, "especialidade"));
+                    if (especialidade == null) return;
+                    Double salario = pedirCampo(titulo, "Digite o salário:", s -> Validador.validarSalario(Validador.lerSalario(s)));
+                    if (salario == null) return;
+                    equipe.adicionarMembro(new Instrutor(nome, cpf, idade, especialidade, salario));
+                }
+                atualizarTabela(equipe.getMembros());
+                JOptionPane.showMessageDialog(this, tipo + " adicionado(a) com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Dado inválido", JOptionPane.WARNING_MESSAGE);
             }
         });
 
@@ -224,6 +229,19 @@ public class TelaPrincipal extends JFrame {
         });
         
         setVisible(true);
+    }
+
+    /** Pede um campo ao usuário e repete enquanto o valor for inválido. Retorna null se cancelar. */
+    private <T> T pedirCampo(String titulo, String pergunta, java.util.function.Function<String, T> validador) {
+        while (true) {
+            String entrada = JOptionPane.showInputDialog(this, pergunta, titulo, JOptionPane.QUESTION_MESSAGE);
+            if (entrada == null) return null;
+            try {
+                return validador.apply(entrada);
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Dado inválido", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
     private void atualizarTabela(List<Pessoa> lista) {

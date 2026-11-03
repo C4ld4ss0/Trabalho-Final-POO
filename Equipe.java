@@ -78,6 +78,10 @@ public class Equipe {
             } catch (NumberFormatException e) {
                 // Pula linhas com cabeçalhos ("Nome;CPF;Idade") ou dados corrompidos sem crashar o loop
                 continue;
+            } catch (IllegalArgumentException e) {
+                // Linha reprovada pela validação (nome, CPF, idade, salário...)
+                System.out.println("Linha " + numeroLinha + " de " + arquivo.getName() + " rejeitada: " + e.getMessage());
+                continue;
             }
         }
     }
@@ -91,7 +95,7 @@ public class Equipe {
                     case "nome":
                         return p.getNome().toLowerCase().contains(termoBusca);
 
-                    case "Sobrenome":
+                    case "sobrenome":
                         String[] partesNome = p.getNome().toLowerCase().split(" ");
                         if (partesNome.length > 1) {
                             return partesNome[partesNome.length - 1].toLowerCase().contains(termoBusca);
@@ -114,6 +118,11 @@ public class Equipe {
                         return false;
                 }
             }).collect(Collectors.toList());
+    }
+
+    public boolean existeCpf(String cpf) {
+        String cpfLimpo = cpf.replaceAll("[^0-9]", "");
+        return membros.stream().anyMatch(m -> m.getCpf().equals(cpfLimpo));
     }
 
     public void adicionarMembro(Pessoa p) {
