@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class Equipe {
@@ -131,6 +133,26 @@ public class Equipe {
             throw new IllegalArgumentException("Já existe um membro com o CPF inserido: " + p.getCpf());
         }
         membros.add(p);
+    }
+
+    /** Adiciona uma cópia idêntica do membro informado (permite criar duplicatas de propósito). */
+    public Pessoa duplicarMembro(Pessoa original) {
+        Pessoa copia = original.copiar();
+        membros.add(copia);
+        return copia;
+    }
+
+    /** Retorna todos os membros que possuem pelo menos um objeto igual (equals) na equipe. */
+    public List<Pessoa> encontrarDuplicadas() {
+        return membros.stream()
+            .filter(p -> Collections.frequency(membros, p) > 1)
+            .sorted(Comparator.comparing(Pessoa::getNome))
+            .collect(Collectors.toList());
+    }
+
+    /** Remove apenas UMA ocorrência do objeto (importante quando existem duplicatas). */
+    public boolean removerMembro(Pessoa p) {
+        return membros.remove(p);
     }
 
     public boolean removerMembroPorCpf(String cpf) {

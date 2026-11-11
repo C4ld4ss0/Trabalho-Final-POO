@@ -3,10 +3,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 //
 public class TelaPrincipal extends JFrame {
     private Equipe equipe;
+    private List<Pessoa> listaExibida = new ArrayList<>(); // pessoas mostradas na tabela, na mesma ordem das linhas
     
     private JTable tabelaMembros; 
     private DefaultTableModel modeloTabela; 
@@ -14,13 +16,14 @@ public class TelaPrincipal extends JFrame {
     private JComboBox<String> comboCampoBusca;
     private JButton botaoImportarCSV, botaoBuscar, botaoListarTodos, 
                     botaoAdicionar, botaoRemover, botaoAlterarSalario, 
-                    botaoVerDuplicatas, botaoEstatisticas;
+                    botaoVerDuplicatas, botaoEstatisticas,
+                    botaoDuplicar, botaoEncontrarDuplicadas;
 
     public TelaPrincipal() { 
         super("Sistema de Gerenciamento da Equipe - POO"); 
         this.equipe = new Equipe();
 
-        setSize(950, 550);
+        setSize(1200, 550);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -66,10 +69,14 @@ public class TelaPrincipal extends JFrame {
         botaoRemover = new JButton("Remover Pessoa");
         botaoVerDuplicatas = new JButton("Relatório das Duplicatas");
         botaoEstatisticas = new JButton("Estatísticas");
-        
+        botaoDuplicar = new JButton("Duplicar Pessoa");
+        botaoEncontrarDuplicadas = new JButton("Encontrar Duplicadas");
+
         painelInferior.add(botaoAdicionar);
         painelInferior.add(botaoAlterarSalario);
         painelInferior.add(botaoRemover);
+        painelInferior.add(botaoDuplicar);
+        painelInferior.add(botaoEncontrarDuplicadas);
         painelInferior.add(botaoVerDuplicatas);
         painelInferior.add(botaoEstatisticas);
 
@@ -184,9 +191,10 @@ public class TelaPrincipal extends JFrame {
         botaoRemover.addActionListener(e -> {
             int linhaSel = tabelaMembros.getSelectedRow();
             if (linhaSel >= 0) {
-                String cpf = (String) modeloTabela.getValueAt(linhaSel, 2); // Coluna 2 agora é de fato o CPF
+                // Remove o objeto da linha selecionada (e não todos com o mesmo CPF, pois podem existir duplicatas)
+                Pessoa selecionada = listaExibida.get(linhaSel);
                 try {
-                    equipe.removerMembroPorCpf(cpf);
+                    equipe.removerMembro(selecionada);
                     atualizarTabela(equipe.getMembros());
                     JOptionPane.showMessageDialog(this, "Pessoa removida com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
@@ -194,6 +202,31 @@ public class TelaPrincipal extends JFrame {
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Selecione uma pessoa na tabela para remover.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+        //-- DUPLICAR PESSOA --//
+        botaoDuplicar.addActionListener(e -> {
+            int linhaSel = tabelaMembros.getSelectedRow();
+            if (linhaSel < 0) {
+                JOptionPane.showMessageDialog(this, "Selecione uma pessoa na tabela para duplicar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            Pessoa original = listaExibida.get(linhaSel);
+            Pessoa copia = equipe.duplicarMembro(original);
+            atualizarTabela(equipe.getMembros());
+            JOptionPane.showMessageDialog(this, "Cópia criada:\n" + copia.obterDadosFormatados(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        //-- ENCONTRAR DUPLICADAS (funcionalidade extra) --//
+        botaoEncontrarDuplicadas.addActionListener(e -> {
+            List<Pessoa> duplicadas = equipe.encontrarDuplicadas();
+            if (duplicadas.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nenhuma pessoa duplicada na equipe.", "Encontrar Duplicadas", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                atualizarTabela(duplicadas);
+                JOptionPane.showMessageDialog(this, duplicadas.size() + " registro(s) duplicado(s) exibido(s) na tabela.",
+                        "Encontrar Duplicadas", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -246,7 +279,9 @@ public class TelaPrincipal extends JFrame {
 
     private void atualizarTabela(List<Pessoa> lista) {
         modeloTabela.setRowCount(0); // Limpa a tabela
+        listaExibida = new ArrayList<>();
         if (lista == null) return;
+        listaExibida.addAll(lista);
         
         for (Pessoa p : lista) {
             if (p instanceof Atleta) {

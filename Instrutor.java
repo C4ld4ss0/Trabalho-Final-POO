@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Instrutor extends Pessoa {
     private String Especialidade;
     private double salario;
@@ -24,5 +26,23 @@ public class Instrutor extends Pessoa {
     public String obterDadosFormatados() {
         return String.format("Instrutor: %s, CPF: %s, Especialidade: %s, Salário: %.2f",
         getNome(), getCpfFormatado(), getEspecialidade(), getSalario());
+    }
+
+    @Override
+    public Pessoa copiar() {
+        return new Instrutor(getNome(), getCpf(), getIdade(), getEspecialidade(), getSalario());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) return false;
+        Instrutor outro = (Instrutor) obj;
+        return getEspecialidade().equalsIgnoreCase(outro.getEspecialidade())
+            && Double.compare(getSalario(), outro.getSalario()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getEspecialidade().toLowerCase(), getSalario());
     }
 }

@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public abstract class Pessoa {
     private String nome;
     private String cpf;
@@ -28,6 +30,25 @@ public abstract class Pessoa {
     public int getIdade() {return idade;}
 
     public abstract String obterDadosFormatados();
+
+    /** Cria um novo objeto com os mesmos dados (cada subclasse sabe se copiar). */
+    public abstract Pessoa copiar();
+
+    /** Duas pessoas são iguais se forem do mesmo tipo e tiverem nome, CPF e idade iguais. */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pessoa outra = (Pessoa) obj;
+        return idade == outra.idade
+            && cpf.equals(outra.cpf)
+            && nome.equalsIgnoreCase(outra.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome.toLowerCase(), cpf, idade);
+    }
 
     public void exibirDados() {
         System.out.println(obterDadosFormatados());
