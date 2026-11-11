@@ -17,6 +17,11 @@ public class Atleta extends Pessoa {
     }
 
     @Override
+    public String paraLinhaCsv() {
+        return "Atleta;" + getNome() + ";" + getCpf() + ";" + getIdade() + ";" + getModalidade();
+    }
+
+    @Override
     public Pessoa copiar() {
         return new Atleta(getNome(), getCpf(), getIdade(), getModalidade());
     }

@@ -3,10 +3,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 //
 public class TelaPrincipal extends JFrame {
+    private static final String ARQUIVO_DADOS = "equipe.csv"; // arquivo gerenciado pelo programa
+
     private Equipe equipe;
     private List<Pessoa> listaExibida = new ArrayList<>(); // pessoas mostradas na tabela, na mesma ordem das linhas
     
@@ -14,7 +17,7 @@ public class TelaPrincipal extends JFrame {
     private DefaultTableModel modeloTabela; 
     private JTextField campoBusca; 
     private JComboBox<String> comboCampoBusca;
-    private JButton botaoImportarCSV, botaoBuscar, botaoListarTodos, 
+    private JButton botaoImportarCSV, botaoSalvar, botaoBuscar, botaoListarTodos, 
                     botaoAdicionar, botaoRemover, botaoAlterarSalario, 
                     botaoVerDuplicatas, botaoEstatisticas,
                     botaoDuplicar, botaoEncontrarDuplicadas;
@@ -30,7 +33,10 @@ public class TelaPrincipal extends JFrame {
         //-- PAINEL SUPERIOR --//
         JPanel painelSuperior = new JPanel(new FlowLayout());
         botaoImportarCSV = new JButton("Importar CSV");
-        painelSuperior.add(botaoImportarCSV);  
+        painelSuperior.add(botaoImportarCSV);
+
+        botaoSalvar = new JButton("Salvar Dados");
+        painelSuperior.add(botaoSalvar);
         
         painelSuperior.add(new JLabel("Buscar por:"));
         comboCampoBusca = new JComboBox<>(new String[]{"Nome", "Sobrenome", "CPF", "Idade", "Modalidade"});
@@ -101,6 +107,17 @@ public class TelaPrincipal extends JFrame {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Erro ao importar os arquivos: " + ex.getMessage(), "Erro durante a importação", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+        });
+
+        //-- SALVAR DADOS --//
+        botaoSalvar.addActionListener(e -> {
+            File arquivo = new File(ARQUIVO_DADOS);
+            try {
+                equipe.salvarCSV(arquivo);
+                JOptionPane.showMessageDialog(this, "Dados salvos em:\n" + arquivo.getAbsolutePath(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -260,8 +277,25 @@ public class TelaPrincipal extends JFrame {
             );
             JOptionPane.showMessageDialog(this, status, "Estatísticas da Equipe", JOptionPane.INFORMATION_MESSAGE);
         });
-        
+
+        carregarDadosIniciais();
         setVisible(true);
+    }
+
+    /** Ao abrir: lê o arquivo salvo; se ele não existir (ou estiver vazio), usa os dados de exemplo. */
+    private void carregarDadosIniciais() {
+        File arquivo = new File(ARQUIVO_DADOS);
+        if (arquivo.exists()) {
+            try {
+                equipe.importarCSV(arquivo);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao ler " + ARQUIVO_DADOS + ": " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if (equipe.getMembros().isEmpty()) {
+            equipe.carregarDadosExemplo();
+        }
+        atualizarTabela(equipe.getMembros());
     }
 
     /** Pede um campo ao usuário e repete enquanto o valor for inválido. Retorna null se cancelar. */

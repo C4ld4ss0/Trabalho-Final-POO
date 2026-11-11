@@ -31,6 +31,9 @@ public abstract class Pessoa {
 
     public abstract String obterDadosFormatados();
 
+    /** Monta a linha que será gravada no arquivo (mesmo formato lido pelo importarCSV). */
+    public abstract String paraLinhaCsv();
+
     /** Cria um novo objeto com os mesmos dados (cada subclasse sabe se copiar). */
     public abstract Pessoa copiar();
 

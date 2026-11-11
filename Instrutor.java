@@ -29,6 +29,11 @@ public class Instrutor extends Pessoa {
     }
 
     @Override
+    public String paraLinhaCsv() {
+        return "Instrutor;" + getNome() + ";" + getCpf() + ";" + getIdade() + ";" + getEspecialidade() + ";" + getSalario();
+    }
+
+    @Override
     public Pessoa copiar() {
         return new Instrutor(getNome(), getCpf(), getIdade(), getEspecialidade(), getSalario());
     }

@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
@@ -89,6 +90,24 @@ public class Equipe {
     }
 }
     
+    /** Grava todos os membros no arquivo texto, uma pessoa por linha. */
+    public void salvarCSV(File arquivo) throws IOException {
+        try (PrintWriter escritor = new PrintWriter(arquivo, "UTF-8")) {
+            membros.forEach(p -> escritor.println(p.paraLinhaCsv()));
+        }
+    }
+
+    /** Dados usados quando o programa abre e ainda não existe arquivo salvo. */
+    public void carregarDadosExemplo() {
+        adicionarMembro(new Atleta("Luccas Silva", "10000000001", 22, "Natação"));
+        adicionarMembro(new Atleta("Ana Santos", "10000000003", 19, "Vôlei"));
+        adicionarMembro(new Atleta("Beatriz Souza", "10000000004", 24, "Basquete"));
+        adicionarMembro(new Atleta("João Coutinho", "20000000104", 25, "Basquete"));
+        adicionarMembro(new Instrutor("Marcos Oliveira", "10000000002", 35, "Musculação", 3200.00));
+        adicionarMembro(new Instrutor("Carlos Pereira", "10000000005", 41, "Treinamento Funcional", 3850.50));
+        adicionarMembro(new Instrutor("Luciana Camargo", "20000000102", 36, "Musculação", 3300.00));
+    }
+
     public List<Pessoa> buscarMulticriterios(String termo, String campo) {
         String termoBusca = termo.toLowerCase().trim();
        
