@@ -212,6 +212,13 @@ public class Equipe {
             .sum();
     }
 
+    public double getMediaIdade() {
+        return membros.stream()
+            .mapToInt(Pessoa::getIdade)
+            .average()
+            .orElse(0.0);
+    }
+
     public double getMediaSalarios() {
         return membros.stream()
             .filter(p -> p instanceof Instrutor)

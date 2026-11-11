@@ -261,22 +261,7 @@ public class TelaPrincipal extends JFrame {
         });
 
         //-- ESTATÍSTICAS --//
-        botaoEstatisticas.addActionListener(e -> {
-            String status = String.format(
-                "-- Painel de Estatísticas --\n" +
-                "Total de Membros: %d\n" +
-                "Total de Atletas: %d\n" + 
-                "Total de Instrutores: %d\n" +
-                "Soma dos Salários: R$ %.2f\n" +
-                "Média dos Salários dos Instrutores: R$ %.2f\n",
-                equipe.getTotalMembros(),
-                equipe.getTotalAtletas(),
-                equipe.getTotalInstrutores(),
-                equipe.getSomaSalarios(),
-                equipe.getMediaSalarios()
-            );
-            JOptionPane.showMessageDialog(this, status, "Estatísticas da Equipe", JOptionPane.INFORMATION_MESSAGE);
-        });
+        botaoEstatisticas.addActionListener(e -> new TelaEstatisticas(this, equipe).setVisible(true));
 
         carregarDadosIniciais();
         setVisible(true);
