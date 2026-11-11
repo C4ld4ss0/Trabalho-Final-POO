@@ -1,14 +1,14 @@
 import java.util.Objects;
 
 public class Atleta extends Pessoa {
-    private String Modalidade;
+    private String modalidade;
 
-    public Atleta(String nome, String cpf, int idade, String Modalidade) {
+    public Atleta(String nome, String cpf, int idade, String modalidade) {
         super(nome, cpf, idade, Validador.IDADE_MIN_ATLETA);
-        this.Modalidade = Validador.validarTexto(Modalidade, "modalidade");
+        this.modalidade = Validador.validarTexto(modalidade, "modalidade");
     }
 
-    public String getModalidade() {return Modalidade;}
+    public String getModalidade() {return modalidade;}
 
     @Override
     public String obterDadosFormatados() {

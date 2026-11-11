@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Equipe {
     private List<Pessoa> membros;
-    private List<Registroduplicata> duplicatasEncontradas;
+    private List<RegistroDuplicata> duplicatasEncontradas;
 //
     public Equipe() {
         this.membros = new ArrayList<>();
@@ -24,7 +24,7 @@ public class Equipe {
         return membros;
     }
 
-    public List<Registroduplicata> getDuplicatasEncontradas() {
+    public List<RegistroDuplicata> getDuplicatasEncontradas() {
         return duplicatasEncontradas;
     }
 
@@ -59,7 +59,7 @@ public class Equipe {
                 boolean jaExiste = membros.stream().anyMatch(p -> p.getCpf().replaceAll("[^0-9]", "").equals(cpfLimpo));
 
                 if (jaExiste) {
-                    duplicatasEncontradas.add(new Registroduplicata(arquivo.getName(), numeroLinha, cpfBruto));
+                    duplicatasEncontradas.add(new RegistroDuplicata(arquivo.getName(), numeroLinha, cpfBruto));
                 } else {
                     if (tipo.equalsIgnoreCase("Atleta")) {
                         String modalidade = dados[4].trim();
@@ -74,7 +74,6 @@ public class Equipe {
                         String especialidade = dados[4].trim();
                         double salario = Double.parseDouble(dados[5].trim().replace(",", "."));
                         
-                        // Corrigido para cpfLimpo, mantendo padrão com Atleta
                         membros.add(new Instrutor(nome, cpfLimpo, idade, especialidade, salario));
                     }
                 }
@@ -179,7 +178,7 @@ public class Equipe {
         return membros.removeIf(p -> p.getCpf().equals(cpfLimpo));
     }
 
-    public void AlterarSalarioInstrutor(String cpf, double novoSalario) {
+    public void alterarSalarioInstrutor(String cpf, double novoSalario) {
         String cpfLimpo = cpf.replaceAll("[^0-9]", "");
         Pessoa p = membros.stream()
             .filter(membro -> membro.getCpf().equals(cpfLimpo) && membro instanceof Instrutor)

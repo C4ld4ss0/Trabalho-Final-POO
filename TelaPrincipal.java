@@ -55,7 +55,6 @@ public class TelaPrincipal extends JFrame {
         //-- FIM DO PAINEL SUPERIOR --//
 
         //-- PAINEL CENTRAL --//
-        // Corrigido para 6 colunas para bater com os 6 dados inseridos no atualizarTabela
         String[] colunas = {"Tipo", "Nome", "CPF", "Idade", "Modalidade / Especialidade", "Salário"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
@@ -144,8 +143,7 @@ public class TelaPrincipal extends JFrame {
                 if (salarioStr != null && !salarioStr.trim().isEmpty()) {
                     try {
                         double novoSalario = Validador.lerSalario(salarioStr);
-                        // Atenção: verifique se na classe Equipe o método está com 'A' maiúsculo ou 'a' minúsculo
-                        equipe.AlterarSalarioInstrutor(cpf, novoSalario);
+                        equipe.alterarSalarioInstrutor(cpf, novoSalario);
                         JOptionPane.showMessageDialog(this, "Salário alterado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                         atualizarTabela(equipe.getMembros());
                     } catch (NumberFormatException ex) {
@@ -249,8 +247,7 @@ public class TelaPrincipal extends JFrame {
 
         //-- RELATÓRIO DE DUPLICATAS --//
         botaoVerDuplicatas.addActionListener(e -> {
-            // Verifique se a sua classe se chama Registroduplicata ou RegistroDuplicata
-            List<Registroduplicata> duplicatas = equipe.getDuplicatasEncontradas();
+            List<RegistroDuplicata> duplicatas = equipe.getDuplicatasEncontradas();
             if (duplicatas.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nenhuma duplicata encontrada.", "Relatório de Duplicatas", JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -311,9 +308,5 @@ public class TelaPrincipal extends JFrame {
                 modeloTabela.addRow(new Object[]{"Instrutor", i.getNome(), i.getCpfFormatado(), i.getIdade(), i.getEspecialidade(), String.format("R$ %.2f", i.getSalario())});
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new TelaPrincipal());
     }
 }

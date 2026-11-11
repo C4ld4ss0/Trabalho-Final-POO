@@ -1,16 +1,16 @@
 import java.util.Objects;
 
 public class Instrutor extends Pessoa {
-    private String Especialidade;
+    private String especialidade;
     private double salario;
 
-    public Instrutor(String nome, String cpf, int idade, String Especialidade, double salario) {
+    public Instrutor(String nome, String cpf, int idade, String especialidade, double salario) {
         super(nome, cpf, idade, Validador.IDADE_MIN_INSTRUTOR);
-        this.Especialidade = Validador.validarTexto(Especialidade, "especialidade");
+        this.especialidade = Validador.validarTexto(especialidade, "especialidade");
         this.salario = Validador.validarSalario(salario);
     }
 
-    public String getEspecialidade() {return Especialidade;}
+    public String getEspecialidade() {return especialidade;}
 
     public double getSalario() {return salario;}
 
