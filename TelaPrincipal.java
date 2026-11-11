@@ -17,7 +17,7 @@ public class TelaPrincipal extends JFrame {
     private DefaultTableModel modeloTabela; 
     private JTextField campoBusca; 
     private JComboBox<String> comboCampoBusca;
-    private JButton botaoImportarCSV, botaoSalvar, botaoBuscar, botaoListarTodos, 
+    private JButton botaoImportarCSV, botaoBuscar, botaoListarTodos, 
                     botaoAdicionar, botaoRemover, botaoAlterarSalario, 
                     botaoEstatisticas,
                     botaoDuplicar, botaoEncontrarDuplicadas;
@@ -34,9 +34,6 @@ public class TelaPrincipal extends JFrame {
         JPanel painelSuperior = new JPanel(new FlowLayout());
         botaoImportarCSV = new JButton("Importar CSV");
         painelSuperior.add(botaoImportarCSV);
-
-        botaoSalvar = new JButton("Salvar Dados");
-        painelSuperior.add(botaoSalvar);
         
         painelSuperior.add(new JLabel("Buscar por:"));
         comboCampoBusca = new JComboBox<>(new String[]{"Nome", "Sobrenome", "CPF", "Idade", "Modalidade"});
@@ -105,13 +102,6 @@ public class TelaPrincipal extends JFrame {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Erro ao importar os arquivos: " + ex.getMessage(), "Erro durante a importação", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-        });
-
-        //-- SALVAR DADOS --//
-        botaoSalvar.addActionListener(e -> {
-            if (salvarDados()) {
-                JOptionPane.showMessageDialog(this, "Dados salvos em:\n" + new File(ARQUIVO_DADOS).getAbsolutePath(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -252,13 +242,11 @@ public class TelaPrincipal extends JFrame {
     }
 
     /** Grava a equipe em equipe.csv. É chamado após toda alteração, para nada se perder ao fechar o programa. */
-    private boolean salvarDados() {
+    private void salvarDados() {
         try {
             equipe.salvarCSV(new File(ARQUIVO_DADOS));
-            return true;
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            return false;
         }
     }
 
