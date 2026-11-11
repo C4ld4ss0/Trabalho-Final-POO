@@ -99,6 +99,7 @@ public class TelaPrincipal extends JFrame {
                     for (File f : arquivos) {
                         equipe.importarCSV(f);
                     }
+                    salvarDados();
                     atualizarTabela(equipe.getMembros());
                     JOptionPane.showMessageDialog(this, "Importação concluída com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
@@ -109,12 +110,8 @@ public class TelaPrincipal extends JFrame {
 
         //-- SALVAR DADOS --//
         botaoSalvar.addActionListener(e -> {
-            File arquivo = new File(ARQUIVO_DADOS);
-            try {
-                equipe.salvarCSV(arquivo);
-                JOptionPane.showMessageDialog(this, "Dados salvos em:\n" + arquivo.getAbsolutePath(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            if (salvarDados()) {
+                JOptionPane.showMessageDialog(this, "Dados salvos em:\n" + new File(ARQUIVO_DADOS).getAbsolutePath(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -142,6 +139,7 @@ public class TelaPrincipal extends JFrame {
                     try {
                         double novoSalario = Validador.lerSalario(salarioStr);
                         equipe.alterarSalarioInstrutor(cpf, novoSalario);
+                        salvarDados();
                         JOptionPane.showMessageDialog(this, "Salário alterado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                         atualizarTabela(equipe.getMembros());
                     } catch (NumberFormatException ex) {
@@ -193,6 +191,7 @@ public class TelaPrincipal extends JFrame {
                     if (salario == null) return;
                     equipe.adicionarMembro(new Instrutor(nome, cpf, idade, especialidade, salario));
                 }
+                salvarDados();
                 atualizarTabela(equipe.getMembros());
                 JOptionPane.showMessageDialog(this, tipo + " adicionado(a) com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception ex) {
@@ -208,6 +207,7 @@ public class TelaPrincipal extends JFrame {
                 Pessoa selecionada = listaExibida.get(linhaSel);
                 try {
                     equipe.removerMembro(selecionada);
+                    salvarDados();
                     atualizarTabela(equipe.getMembros());
                     JOptionPane.showMessageDialog(this, "Pessoa removida com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
@@ -227,6 +227,7 @@ public class TelaPrincipal extends JFrame {
             }
             Pessoa original = listaExibida.get(linhaSel);
             Pessoa copia = equipe.duplicarMembro(original);
+            salvarDados();
             atualizarTabela(equipe.getMembros());
             JOptionPane.showMessageDialog(this, "Cópia criada:\n" + copia.obterDadosFormatados(), "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -248,6 +249,17 @@ public class TelaPrincipal extends JFrame {
 
         carregarDadosIniciais();
         setVisible(true);
+    }
+
+    /** Grava a equipe em equipe.csv. É chamado após toda alteração, para nada se perder ao fechar o programa. */
+    private boolean salvarDados() {
+        try {
+            equipe.salvarCSV(new File(ARQUIVO_DADOS));
+            return true;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
     }
 
     /** Ao abrir: lê o arquivo salvo; se ele não existir (ou estiver vazio), usa os dados de exemplo. */
