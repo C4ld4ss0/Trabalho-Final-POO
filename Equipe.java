@@ -13,19 +13,13 @@ import java.util.stream.Collectors;
 
 public class Equipe {
     private List<Pessoa> membros;
-    private List<RegistroDuplicata> duplicatasEncontradas;
-//
+
     public Equipe() {
         this.membros = new ArrayList<>();
-        this.duplicatasEncontradas = new ArrayList<>();
     }
 
     public List<Pessoa> getMembros() {
         return membros;
-    }
-
-    public List<RegistroDuplicata> getDuplicatasEncontradas() {
-        return duplicatasEncontradas;
     }
 
     //Importador múltiplo de arquivos CSV
@@ -51,31 +45,24 @@ public class Equipe {
             try {
                 String tipo = dados[0].trim();
                 String nome = dados[1].trim();
-                String cpfBruto = dados[2].trim(); 
+                String cpf = dados[2].trim();
                 int idade = Integer.parseInt(dados[3].trim());
-                String cpfLimpo = cpfBruto.replaceAll("[^0-9]", "");
 
-                // Verifica duplicidade pelo CPF numérico padronizado
-                boolean jaExiste = membros.stream().anyMatch(p -> p.getCpf().replaceAll("[^0-9]", "").equals(cpfLimpo));
+                // Registros repetidos também são adicionados: o botão "Encontrar Duplicadas" é quem os aponta
+                if (tipo.equalsIgnoreCase("Atleta")) {
+                    String modalidade = dados[4].trim();
+                    membros.add(new Atleta(nome, cpf, idade, modalidade));
 
-                if (jaExiste) {
-                    duplicatasEncontradas.add(new RegistroDuplicata(arquivo.getName(), numeroLinha, cpfBruto));
-                } else {
-                    if (tipo.equalsIgnoreCase("Atleta")) {
-                        String modalidade = dados[4].trim();
-                        membros.add(new Atleta(nome, cpfLimpo, idade, modalidade));
-
-                    } else if (tipo.equalsIgnoreCase("Instrutor")) {
-                        // Garante que a linha possui o campo de salário antes de tentar ler dados[5]
-                        if (dados.length < 6) {
-                            continue;
-                        }
-
-                        String especialidade = dados[4].trim();
-                        double salario = Double.parseDouble(dados[5].trim().replace(",", "."));
-                        
-                        membros.add(new Instrutor(nome, cpfLimpo, idade, especialidade, salario));
+                } else if (tipo.equalsIgnoreCase("Instrutor")) {
+                    // Garante que a linha possui o campo de salário antes de tentar ler dados[5]
+                    if (dados.length < 6) {
+                        continue;
                     }
+
+                    String especialidade = dados[4].trim();
+                    double salario = Double.parseDouble(dados[5].trim().replace(",", "."));
+
+                    membros.add(new Instrutor(nome, cpf, idade, especialidade, salario));
                 }
             } catch (NumberFormatException e) {
                 // Pula linhas com cabeçalhos ("Nome;CPF;Idade") ou dados corrompidos sem crashar o loop
@@ -173,11 +160,6 @@ public class Equipe {
         return membros.remove(p);
     }
 
-    public boolean removerMembroPorCpf(String cpf) {
-        String cpfLimpo = cpf.replaceAll("[^0-9]", "");
-        return membros.removeIf(p -> p.getCpf().equals(cpfLimpo));
-    }
-
     public void alterarSalarioInstrutor(String cpf, double novoSalario) {
         String cpfLimpo = cpf.replaceAll("[^0-9]", "");
         Pessoa p = membros.stream()
@@ -225,16 +207,4 @@ public class Equipe {
             .average()
             .orElse(0.0);
     }
-
-    //public List<Pessoa> buscarPorTrechoCpf(String trechoCpf){
-    //    String trechoLimpo = trechoCpf == null ? "" : trechoCpf.replaceAll("[^0-9]", "");
-    //    List<Pessoa> encontrados = membros.stream()
-    //        .filter(p -> p.getCpf().contains(trechoLimpo))
-    //        .collect(Collectors.toList());
-    //    if (encontrados.isEmpty()) {
-    //        throw new PessoaNaoEncontradaException("Nenhuma pessoa encontrada com o trecho de CPF: " + trechoCpf);
-    //    }
-    //    return encontrados;
-    //}
-
 }

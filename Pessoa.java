@@ -52,8 +52,4 @@ public abstract class Pessoa {
     public int hashCode() {
         return Objects.hash(nome.toLowerCase(), cpf, idade);
     }
-
-    public void exibirDados() {
-        System.out.println(obterDadosFormatados());
-    }
 }

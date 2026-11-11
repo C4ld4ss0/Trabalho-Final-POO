@@ -40,19 +40,6 @@ public final class Validador {
         return digitos;
     }
 
-    /** OPCIONAL: valida os dígitos verificadores. NÃO usar com os CSVs atuais (CPFs fictícios, ex.: 10000000001). */
-    public static boolean cpfDigitosVerificadoresValidos(String cpf11) {
-        for (int t = 9; t < 11; t++) {
-            int soma = 0;
-            for (int i = 0; i < t; i++) {
-                soma += (cpf11.charAt(i) - '0') * (t + 1 - i);
-            }
-            int dv = (soma * 10) % 11 % 10;
-            if (dv != cpf11.charAt(t) - '0') return false;
-        }
-        return true;
-    }
-
     /** Converte o texto digitado em idade (inteiro). */
     public static int lerIdade(String texto) {
         if (texto == null || !texto.trim().matches("[0-9]{1,3}")) {

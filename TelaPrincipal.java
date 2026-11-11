@@ -19,7 +19,7 @@ public class TelaPrincipal extends JFrame {
     private JComboBox<String> comboCampoBusca;
     private JButton botaoImportarCSV, botaoSalvar, botaoBuscar, botaoListarTodos, 
                     botaoAdicionar, botaoRemover, botaoAlterarSalario, 
-                    botaoVerDuplicatas, botaoEstatisticas,
+                    botaoEstatisticas,
                     botaoDuplicar, botaoEncontrarDuplicadas;
 
     public TelaPrincipal() { 
@@ -72,7 +72,6 @@ public class TelaPrincipal extends JFrame {
         botaoAdicionar = new JButton("Adicionar Pessoa");
         botaoAlterarSalario = new JButton("Alterar Salário");
         botaoRemover = new JButton("Remover Pessoa");
-        botaoVerDuplicatas = new JButton("Relatório das Duplicatas");
         botaoEstatisticas = new JButton("Estatísticas");
         botaoDuplicar = new JButton("Duplicar Pessoa");
         botaoEncontrarDuplicadas = new JButton("Encontrar Duplicadas");
@@ -82,7 +81,6 @@ public class TelaPrincipal extends JFrame {
         painelInferior.add(botaoRemover);
         painelInferior.add(botaoDuplicar);
         painelInferior.add(botaoEncontrarDuplicadas);
-        painelInferior.add(botaoVerDuplicatas);
         painelInferior.add(botaoEstatisticas);
 
         add(painelInferior, BorderLayout.SOUTH);
@@ -242,18 +240,6 @@ public class TelaPrincipal extends JFrame {
                 atualizarTabela(duplicadas);
                 JOptionPane.showMessageDialog(this, duplicadas.size() + " registro(s) duplicado(s) exibido(s) na tabela.",
                         "Encontrar Duplicadas", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-        //-- RELATÓRIO DE DUPLICATAS --//
-        botaoVerDuplicatas.addActionListener(e -> {
-            List<RegistroDuplicata> duplicatas = equipe.getDuplicatasEncontradas();
-            if (duplicatas.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Nenhuma duplicata encontrada.", "Relatório de Duplicatas", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                StringBuilder relatorio = new StringBuilder("Registros Duplicados:\n");
-                duplicatas.forEach(dup -> relatorio.append(dup.toString()).append("\n"));
-                JOptionPane.showMessageDialog(this, relatorio.toString(), "Relatório de Duplicatas", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
