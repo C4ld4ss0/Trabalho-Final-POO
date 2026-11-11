@@ -160,20 +160,6 @@ public class Equipe {
         return membros.remove(p);
     }
 
-    public void alterarSalarioInstrutor(String cpf, double novoSalario) {
-        String cpfLimpo = cpf.replaceAll("[^0-9]", "");
-        Pessoa p = membros.stream()
-            .filter(membro -> membro.getCpf().equals(cpfLimpo) && membro instanceof Instrutor)
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Instrutor com o CPF fornecido não encontrado: " + cpf));
-        
-        if (p instanceof Instrutor) {
-            ((Instrutor) p).setSalario(novoSalario);
-        }else {
-            throw new IllegalArgumentException("O membro encontrado não é um instrutor: " + cpf);
-        }
-    } 
-
     public long getTotalMembros() {
         return membros.stream().count();
     }
