@@ -1,14 +1,21 @@
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+/**
+ * Ponto de partida do programa: é a classe que o Java executa primeiro.
+ * Ela só configura o visual e abre a janela principal (TelaPrincipal).
+ */
 public class Main {
     public static void main(String[] args) {
-        // Usa o visual "Nimbus", que já vem com o Java e é mais moderno que o padrão
+        // Troca o visual padrão do Swing pelo "Nimbus", que já vem com o Java e é mais moderno.
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
-            // se não conseguir, o programa continua com o visual padrão
+            // Se o Nimbus não estiver disponível, o programa segue com o visual padrão.
         }
+
+        // invokeLater: o Swing exige que as janelas sejam criadas na "thread de eventos" dele.
+        // Na prática: é a forma correta de abrir uma janela Swing.
         SwingUtilities.invokeLater(() -> new TelaPrincipal());
     }
 }

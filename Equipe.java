@@ -11,6 +11,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+/**
+ * Guarda a coleção de membros (Atletas e Instrutores juntos em um List<Pessoa>) e reúne
+ * todas as operações sobre ela: arquivo, busca, cadastro, duplicatas e estatísticas.
+ * A tela (TelaPrincipal) nunca mexe na lista direto: sempre chama um método daqui.
+ */
 public class Equipe {
     private List<Pessoa> membros;
 
@@ -18,72 +23,85 @@ public class Equipe {
         this.membros = new ArrayList<>();
     }
 
+    /** Lista completa de membros. Usada pela TelaPrincipal para preencher as tabelas. */
     public List<Pessoa> getMembros() {
         return membros;
     }
 
-    //Importador múltiplo de arquivos CSV
+    // =====================================================================
+    //  ARQUIVOS
+    // =====================================================================
+
+    /**
+     * Lê um arquivo CSV e adiciona cada linha válida como Atleta ou Instrutor.
+     * Formato de cada linha: tipo;nome;cpf;idade;modalidade  ou  tipo;nome;cpf;idade;especialidade;salario
+     * Usado ao abrir o programa (lê o equipe.csv) e no botão "Importar CSV".
+     * Registros repetidos também entram: quem os aponta é o botão "Encontrar Duplicadas".
+     */
     public void importarCSV(File arquivo) throws IOException {
-    // Especificar UTF-8 garante a correta leitura de acentos no Windows/Linux
-    try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), StandardCharsets.UTF_8))) {
-        String linha;
-        int numeroLinha = 0;
+        // try-with-resources: o arquivo é fechado sozinho no fim do bloco.
+        // UTF-8 garante que acentos (ç, ã, é) sejam lidos corretamente.
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(arquivo), StandardCharsets.UTF_8))) {
+            String linha;
+            int numeroLinha = 0;
 
-        while ((linha = br.readLine()) != null) {
-            numeroLinha++;
-            
-            // Ignora linhas vazias
-            if (linha.trim().isEmpty()) {
-                continue;
-            }
+            // readLine devolve null quando o arquivo acaba
+            while ((linha = br.readLine()) != null) {
+                numeroLinha++;
 
-            String[] dados = linha.split(";");
-            if (dados.length < 5) {
-                continue;
-            }
-
-            try {
-                String tipo = dados[0].trim();
-                String nome = dados[1].trim();
-                String cpf = dados[2].trim();
-                int idade = Integer.parseInt(dados[3].trim());
-
-                // Registros repetidos também são adicionados: o botão "Encontrar Duplicadas" é quem os aponta
-                if (tipo.equalsIgnoreCase("Atleta")) {
-                    String modalidade = dados[4].trim();
-                    membros.add(new Atleta(nome, cpf, idade, modalidade));
-
-                } else if (tipo.equalsIgnoreCase("Instrutor")) {
-                    // Garante que a linha possui o campo de salário antes de tentar ler dados[5]
-                    if (dados.length < 6) {
-                        continue;
-                    }
-
-                    String especialidade = dados[4].trim();
-                    double salario = Double.parseDouble(dados[5].trim().replace(",", "."));
-
-                    membros.add(new Instrutor(nome, cpf, idade, especialidade, salario));
+                if (linha.trim().isEmpty()) {
+                    continue;   // pula linha vazia
                 }
-            } catch (NumberFormatException e) {
-                // Pula linhas com cabeçalhos ("Nome;CPF;Idade") ou dados corrompidos sem crashar o loop
-                continue;
-            } catch (IllegalArgumentException e) {
-                // Linha reprovada pela validação (nome, CPF, idade, salário...)
-                System.out.println("Linha " + numeroLinha + " de " + arquivo.getName() + " rejeitada: " + e.getMessage());
-                continue;
+
+                String[] dados = linha.split(";");   // corta a linha em pedaços onde tem ";"
+                if (dados.length < 5) {
+                    continue;   // linha incompleta
+                }
+
+                try {
+                    String tipo = dados[0].trim();
+                    String nome = dados[1].trim();
+                    String cpf = dados[2].trim();
+                    int idade = Integer.parseInt(dados[3].trim());
+
+                    if (tipo.equalsIgnoreCase("Atleta")) {
+                        String modalidade = dados[4].trim();
+                        membros.add(new Atleta(nome, cpf, idade, modalidade));
+
+                    } else if (tipo.equalsIgnoreCase("Instrutor")) {
+                        if (dados.length < 6) {
+                            continue;   // instrutor sem o campo de salário
+                        }
+
+                        String especialidade = dados[4].trim();
+                        double salario = Double.parseDouble(dados[5].trim().replace(",", "."));
+
+                        membros.add(new Instrutor(nome, cpf, idade, especialidade, salario));
+                    }
+                } catch (NumberFormatException e) {
+                    // idade ou salário que não são números (ex.: linha de cabeçalho): pula a linha
+                    continue;
+                } catch (IllegalArgumentException e) {
+                    // dado reprovado pelo Validador: avisa no console e pula a linha
+                    System.out.println("Linha " + numeroLinha + " de " + arquivo.getName() + " rejeitada: " + e.getMessage());
+                    continue;
+                }
             }
         }
     }
-}
-    
-    /** Grava todos os membros no arquivo texto, uma pessoa por linha. */
+
+    /**
+     * Grava todos os membros no arquivo, uma pessoa por linha.
+     * Cada objeto monta a própria linha com paraLinhaCsv() (polimorfismo).
+     * Usado pela TelaPrincipal depois de toda alteração (salvamento automático).
+     */
     public void salvarCSV(File arquivo) throws IOException {
         try (PrintWriter escritor = new PrintWriter(arquivo, "UTF-8")) {
             membros.forEach(p -> escritor.println(p.paraLinhaCsv()));
         }
     }
 
-    /** Dados usados quando o programa abre e ainda não existe arquivo salvo. */
+    /** Dados de exemplo usados quando o programa abre e ainda não existe equipe.csv. */
     public void carregarDadosExemplo() {
         adicionarMembro(new Atleta("Luccas Silva", "10000000001", 22, "Natação"));
         adicionarMembro(new Atleta("Ana Santos", "10000000003", 19, "Vôlei"));
@@ -94,15 +112,25 @@ public class Equipe {
         adicionarMembro(new Instrutor("Luciana Camargo", "20000000102", 36, "Musculação", 3300.00));
     }
 
+    // =====================================================================
+    //  BUSCA E CADASTRO
+    // =====================================================================
+
+    /**
+     * Devolve os membros que combinam com o termo digitado, no campo escolhido no combo.
+     * stream().filter(...) passa cada pessoa pelo teste e collect junta as aprovadas em uma nova lista.
+     * Usado pelo botão "Buscar" da aba Equipe.
+     */
     public List<Pessoa> buscarMulticriterios(String termo, String campo) {
         String termoBusca = termo.toLowerCase().trim();
-       
+
         return membros.stream().filter(p -> {
                 switch (campo.toLowerCase()) {
                     case "nome":
                         return p.getNome().toLowerCase().contains(termoBusca);
 
                     case "sobrenome":
+                        // separa o nome nos espaços e compara só a última parte
                         String[] partesNome = p.getNome().toLowerCase().split(" ");
                         if (partesNome.length > 1) {
                             return partesNome[partesNome.length - 1].toLowerCase().contains(termoBusca);
@@ -110,12 +138,14 @@ public class Equipe {
                         return false;
 
                     case "cpf":
+                        // replaceAll("[^0-9]", "") apaga tudo que não for número (pontos e traço)
                         return p.getCpf().contains(termoBusca.replaceAll("[^0-9]", ""));
 
                     case "idade":
                         return String.valueOf(p.getIdade()).equals(termoBusca);
 
                     case "modalidade":
+                        // só atletas têm modalidade; instrutores ficam de fora
                         if (p instanceof Atleta) {
                             return ((Atleta) p).getModalidade().toLowerCase().contains(termoBusca);
                         }
@@ -127,11 +157,20 @@ public class Equipe {
             }).collect(Collectors.toList());
     }
 
+    /**
+     * true se já existe alguém com esse CPF.
+     * Usado no cadastro (TelaPrincipal.adicionarPessoa) para avisar logo no campo do CPF.
+     */
     public boolean existeCpf(String cpf) {
         String cpfLimpo = cpf.replaceAll("[^0-9]", "");
         return membros.stream().anyMatch(m -> m.getCpf().equals(cpfLimpo));
     }
 
+    /**
+     * Adiciona uma pessoa nova, bloqueando CPF repetido.
+     * Usado no cadastro manual e no carregarDadosExemplo.
+     * (Cópias de propósito entram por duplicarMembro, que não faz esse bloqueio.)
+     */
     public void adicionarMembro(Pessoa p) {
         String cpfLimpo = p.getCpf().replaceAll("[^0-9]", "");
         if (membros.stream().anyMatch(membro -> membro.getCpf().equals(cpfLimpo))) {
@@ -140,14 +179,27 @@ public class Equipe {
         membros.add(p);
     }
 
-    /** Adiciona uma cópia idêntica do membro informado (permite criar duplicatas de propósito). */
+    // =====================================================================
+    //  DUPLICATAS (funcionalidade extra) E REMOÇÃO
+    // =====================================================================
+
+    /**
+     * Cria uma cópia idêntica do membro e a coloca na equipe.
+     * copiar() é polimórfico: gera um Atleta ou um Instrutor conforme o original.
+     * Usado pelo botão "Duplicar Pessoa".
+     */
     public Pessoa duplicarMembro(Pessoa original) {
         Pessoa copia = original.copiar();
         membros.add(copia);
         return copia;
     }
 
-    /** Retorna todos os membros que possuem pelo menos um objeto igual (equals) na equipe. */
+    /**
+     * Devolve todos os membros que têm pelo menos uma cópia igual na equipe, ordenados por nome.
+     * Collections.frequency conta quantas vezes a pessoa aparece na lista usando o equals();
+     * se aparecer mais de 1 vez, é duplicada.
+     * Usado pelo botão "Encontrar Duplicadas".
+     */
     public List<Pessoa> encontrarDuplicadas() {
         return membros.stream()
             .filter(p -> Collections.frequency(membros, p) > 1)
@@ -155,23 +207,34 @@ public class Equipe {
             .collect(Collectors.toList());
     }
 
-    /** Remove apenas UMA ocorrência do objeto (importante quando existem duplicatas). */
+    /**
+     * Remove UMA ocorrência da pessoa (List.remove usa o equals e para no primeiro que achar).
+     * Assim, quando existem cópias, só uma delas sai. Usado pelo botão "Remover Pessoa".
+     */
     public boolean removerMembro(Pessoa p) {
         return membros.remove(p);
     }
+
+    // =====================================================================
+    //  ESTATÍSTICAS
+    //  Usadas pela janela TelaEstatisticas e pelo resumo da aba Financeiro.
+    // =====================================================================
 
     public long getTotalMembros() {
         return membros.stream().count();
     }
 
+    /** filter + instanceof: mantém só os atletas e count conta quantos sobraram. */
     public long getTotalAtletas() {
         return membros.stream().filter(p -> p instanceof Atleta).count();
     }
 
+    /** Mesma ideia do getTotalAtletas, para instrutores. */
     public long getTotalInstrutores() {
         return membros.stream().filter(p -> p instanceof Instrutor).count();
     }
 
+    /** Mantém só os instrutores, transforma cada um no seu salário (mapToDouble) e soma. */
     public double getSomaSalarios() {
         return membros.stream()
             .filter(p -> p instanceof Instrutor)
@@ -179,6 +242,7 @@ public class Equipe {
             .sum();
     }
 
+    /** Média de idade de todos os membros. orElse(0.0) evita erro quando a lista está vazia. */
     public double getMediaIdade() {
         return membros.stream()
             .mapToInt(Pessoa::getIdade)
@@ -186,6 +250,7 @@ public class Equipe {
             .orElse(0.0);
     }
 
+    /** Mesma ideia do getSomaSalarios, mas com average() no lugar de sum(). */
     public double getMediaSalarios() {
         return membros.stream()
             .filter(p -> p instanceof Instrutor)
