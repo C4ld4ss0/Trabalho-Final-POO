@@ -3,7 +3,7 @@ import javax.swing.UIManager;
 
 /**
  * Ponto de partida do programa: é a classe que o Java executa primeiro.
- * Ela só configura o visual e abre a janela principal (TelaPrincipal).
+ * Ela só configura o visual e abre a tela inicial (TelaInicial).
  */
 public class Main {
     public static void main(String[] args) {
@@ -16,6 +16,7 @@ public class Main {
 
         // invokeLater: o Swing exige que as janelas sejam criadas na "thread de eventos" dele.
         // Na prática: é a forma correta de abrir uma janela Swing.
-        SwingUtilities.invokeLater(() -> new TelaPrincipal());
+        // O programa começa pela tela de boas-vindas; ela abre a TelaPrincipal ao clicar em "Continuar".
+        SwingUtilities.invokeLater(() -> new TelaInicial());
     }
 }

@@ -33,7 +33,7 @@ public class TelaPrincipal extends JFrame {
     private JLabel labelTotalInstrutores, labelSomaSalarios, labelMediaSalarios;
     private List<Instrutor> instrutoresExibidos = new ArrayList<>(); // mesma ideia da listaExibida
 
-    /** Monta a janela, as duas abas e carrega os dados. Chamado pela Main. */
+    /** Monta a janela, as duas abas e carrega os dados. Chamado pelo botão "Continuar" da TelaInicial. */
     public TelaPrincipal() {
         super("Sistema de Gerenciamento da Equipe - POO");   // título da janela
         this.equipe = new Equipe();

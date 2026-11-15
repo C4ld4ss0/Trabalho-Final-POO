@@ -118,6 +118,7 @@ public class Equipe {
 
     /**
      * Devolve os membros que combinam com o termo digitado, no campo escolhido no combo.
+     * Nome e sobrenome comparam só o INÍCIO (startsWith); CPF e modalidade aceitam qualquer parte (contains).
      * stream().filter(...) passa cada pessoa pelo teste e collect junta as aprovadas em uma nova lista.
      * Usado pelo botão "Buscar" da aba Equipe.
      */
@@ -127,13 +128,15 @@ public class Equipe {
         return membros.stream().filter(p -> {
                 switch (campo.toLowerCase()) {
                     case "nome":
-                        return p.getNome().toLowerCase().contains(termoBusca);
+                        // startsWith = "começa com": só traz quem tem o nome INICIANDO pelo texto digitado
+                        // (antes era contains, que trazia a letra em qualquer parte, ex.: "l" achava "Carlos")
+                        return p.getNome().toLowerCase().startsWith(termoBusca);
 
                     case "sobrenome":
-                        // separa o nome nos espaços e compara só a última parte
+                        // separa o nome nos espaços e compara só o começo da última parte (o sobrenome)
                         String[] partesNome = p.getNome().toLowerCase().split(" ");
                         if (partesNome.length > 1) {
-                            return partesNome[partesNome.length - 1].toLowerCase().contains(termoBusca);
+                            return partesNome[partesNome.length - 1].startsWith(termoBusca);
                         }
                         return false;
 
