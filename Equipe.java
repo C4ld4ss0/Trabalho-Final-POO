@@ -93,12 +93,12 @@ public class Equipe {
         return membros.stream().filter(p -> {
                 switch (campo.toLowerCase()) {
                     case "nome":
-                        return p.getNome().toLowerCase().contains(termoBusca);
+                        return p.getNome().toLowerCase().startsWith(termoBusca);
 
                     case "sobrenome":
                         String[] partesNome = p.getNome().toLowerCase().split(" ");
                         if (partesNome.length > 1) {
-                            return partesNome[partesNome.length - 1].toLowerCase().contains(termoBusca);
+                            return partesNome[partesNome.length - 1].startsWith(termoBusca);
                         }
                         return false;
 
@@ -136,6 +136,30 @@ public class Equipe {
     public boolean removerMembroPorCpf(String cpf) {
         String cpfLimpo = cpf.replaceAll("[^0-9]", "");
         return membros.removeIf(p -> p.getCpf().equals(cpfLimpo));
+    }
+
+    public void duplicarMembro(Pessoa original) {
+        if (original instanceof Atleta) {
+            Atleta a = (Atleta) original;
+            membros.add(new Atleta(a.getNome(), a.getCpf(), a.getIdade(), a.getModalidade()));
+        } else if (original instanceof Instrutor) {
+            Instrutor i = (Instrutor) original;
+            membros.add(new Instrutor(i.getNome(), i.getCpf(), i.getIdade(), i.getEspecialidade(), i.getSalario()));
+        }
+    }
+
+    public List<Pessoa> encontrarDuplicadasNaLista() {
+        List<Pessoa> duplicadas = new ArrayList<>();
+        for (int i = 0; i < membros.size(); i++) {
+            Pessoa atual = membros.get(i);
+            long ocorrencias = membros.stream()
+                    .filter(p -> p.getCpf().equals(atual.getCpf()))
+                    .count();
+            if (ocorrencias > 1) {
+                duplicadas.add(atual);
+            }
+        }
+        return duplicadas;
     }
 
     public void AlterarSalarioInstrutor(String cpf, double novoSalario) {
